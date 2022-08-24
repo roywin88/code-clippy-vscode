@@ -21,8 +21,8 @@ This extension also sits completely atop this other clone of Github Copilot aptl
 
 ## Table of contents:
 
-1. [How to Install](#1-installation)
-2. [Using Code Clippy](#2-play-with-captain-stack)
+1. [How to Install](#1-how-to-install)
+2. [Using Code Clippy](#2-using-code-clippy)
 3. [Limitations](#3-limitations)
 
 ---
