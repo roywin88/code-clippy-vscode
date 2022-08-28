@@ -39,6 +39,15 @@ npm install
 code-insiders .
 ```
 
+## 1b. How to Install as a Packaged Extension
+
+Alternatively to running the extension in debug mode, you can package it locally and install it.
+
+```$ npm install
+$ npm run esbuild
+$ vsce package
+```
+Say 'y' to the warning. Then install the extension with vscode➡️…➡️Install from VSIX➡️<install directory/code-clippy-0.0.1.vsix>. Finally, once installed, set conf.resource.hfAPIKey to your HuggingFace API key.
 ---
 
 ## 2. Using Code Clippy
