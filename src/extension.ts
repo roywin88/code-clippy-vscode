@@ -64,7 +64,7 @@ export function activate(context: vscode.ExtensionContext) {
 				const items = new Array<CustomInlineCompletionItem>();
 				for (let i=0; i < rs.completions.length; i++) {
 					items.push({
-						text: rs.completions[i],
+						insertText: rs.completions[i],
 						range: new vscode.Range(position.translate(0, rs.completions.length), position),
 						trackingId: `snippet-${i}`,
 					});
