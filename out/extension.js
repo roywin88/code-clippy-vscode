@@ -19,13 +19,15 @@ function activate(context) {
     });
     context.subscriptions.push(disposable);
     const provider = {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         provideInlineCompletionItems: (document, position, context, token) => __awaiter(this, void 0, void 0, function* () {
             // Grab the api key from the extension's config
             const configuration = vscode.workspace.getConfiguration('', document.uri);
             const MODEL_NAME = configuration.get("conf.resource.hfModelName", "");
             const API_KEY = configuration.get("conf.resource.hfAPIKey", "");
             const USE_GPU = configuration.get("conf.resource.useGPU", false);
-            vscode.comments.createCommentController;
+            // vscode.comments.createCommentController
             const textBeforeCursor = document.getText();
             if (textBeforeCursor.trim() === "") {
                 return { items: [] };
@@ -36,7 +38,7 @@ function activate(context) {
                 let rs;
                 try {
                     // Fetch the code completion based on the text in the user's document
-                    rs = yield (0, fetchCodeCompletions_1.fetchCodeCompletionTexts)(textBeforeCursor, document.fileName, MODEL_NAME, API_KEY, USE_GPU);
+                    rs = yield fetchCodeCompletions_1.fetchCodeCompletionTexts(textBeforeCursor, document.fileName, MODEL_NAME, API_KEY, USE_GPU);
                 }
                 catch (err) {
                     if (err instanceof Error) {
@@ -52,10 +54,10 @@ function activate(context) {
                     return { items: [] };
                 }
                 // Add the generated code to the inline suggestion list
-                const items = new Array();
+                const items = [];
                 for (let i = 0; i < rs.completions.length; i++) {
                     items.push({
-                        text: rs.completions[i],
+                        insertText: rs.completions[i],
                         range: new vscode.Range(position.translate(0, rs.completions.length), position),
                         trackingId: `snippet-${i}`,
                     });
@@ -65,10 +67,8 @@ function activate(context) {
             return { items: [] };
         }),
     };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     vscode.languages.registerInlineCompletionItemProvider({ pattern: "**" }, provider);
-    // Be aware that the API around `getInlineCompletionItemController` will not be finalized as is!
-    vscode.window.getInlineCompletionItemController(provider).onDidShowCompletionItem(e => {
-        const id = e.completionItem.trackingId;
-    });
 }
 exports.activate = activate;
