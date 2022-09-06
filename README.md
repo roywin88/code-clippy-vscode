@@ -48,6 +48,18 @@ $ npm run esbuild
 $ vsce package
 ```
 Say 'y' to the warning. Then install the extension with vscode➡️…➡️Install from VSIX➡️<install directory/code-clippy-0.0.1.vsix>. Finally, once installed, set conf.resource.hfAPIKey to your HuggingFace API key.
+
+**Note -**
+You may need to update your Node version to build the package. If you get an error like this:
+```
+    return (translations ?? [])
+                          ^
+
+SyntaxError: Unexpected token ?
+```
+
+Tested on Node `v16.17.0` and npm `v7.13.0`.
+
 ---
 
 ## 2. Using Code Clippy
