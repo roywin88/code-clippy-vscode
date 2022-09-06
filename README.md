@@ -21,22 +21,22 @@ This extension also sits completely atop this other clone of Github Copilot aptl
 
 ## Table of contents:
 
-1. [How to Install](#1-installation)
-2. [Using Code Clippy](#2-play-with-captain-stack)
+1. [How to Install](#1-how-to-install)
+2. [Using Code Clippy](#2-using-code-clippy)
 3. [Limitations](#3-limitations)
 
 ---
 
 ## 1. How to Install
 
-In order to use the extension, you will need to download and install [VSCode Insider](https://code.visualstudio.com/insiders/) and [Node and npm](https://nodejs.dev/learn/how-to-install-nodejs) (tested on Node `10.19.0` and npm `7.13.0`). Additionally, you will need a [Huggingface account](https://huggingface.co/join) in order to obtain the necessary API key that is used to authorize calls to Huggingface's Inference API.
+In order to use the extension, you will need to download and install [VSCode](https://code.visualstudio.com/Download) and [Node and npm](https://nodejs.dev/learn/how-to-install-nodejs) (tested on Node `10.19.0` and npm `7.13.0`). Additionally, you will need a [Huggingface account](https://huggingface.co/join) in order to obtain the necessary API key that is used to authorize calls to Huggingface's Inference API.
 
 Download and install Code Clippy:
 ```bash
 git clone https://github.com/CodedotAl/code-clippy-vscode
 cd code-clippy-vscode
 npm install
-code-insiders .
+code .
 ```
 
 ## 1b. How to Install as a Packaged Extension
@@ -52,7 +52,7 @@ Say 'y' to the warning. Then install the extension with vscode➡️…➡️Ins
 
 ## 2. Using Code Clippy
 
-Once VSCode Insider has opened up, you can press F5 to launch the extension in another VSCode window in debug model that you can test out. Open up a file of your choice in the new VSCode window and start typing. You will be prompted to enter an API key, go to your Huggingface account's [API token page](https://api-inference.huggingface.co/dashboard/api_token) and copy your API key and paste it into the prompt. Now you should be able to type and see suggestions! To accept a suggestion, just press tab and to cycle through different suggestions press `ALT + [` to go to the next suggestion or `ALT + ]` to go to the previous one.
+Once VSCode has opened up, you can press F5 to launch the extension in another VSCode window in debug model that you can test out. Open up a file of your choice in the new VSCode window and start typing. You will be prompted to enter an API key, go to your Huggingface account's [API token page](https://huggingface.co/settings/tokens) and copy your API key and paste it into the prompt. Now you should be able to type and see suggestions! To accept a suggestion, just press tab and to cycle through different suggestions press `ALT + [` to go to the next suggestion or `ALT + ]` to go to the previous one.
 
 **Note -**
 
