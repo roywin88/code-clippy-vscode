@@ -18,9 +18,9 @@ export function fetchCodeCompletionTexts(prompt: string, fileName: string, MODEL
                 "inputs": prompt, "parameters": {
                     "max_new_tokens": 16, "return_full_text": false,
                     "do_sample": true, "temperature": 0.8, "top_p": 0.95,
-                    "max_time": 10.0, "num_return_sequences": 3,
-                    "use_gpu": USE_GPU
-                }
+                    "max_time": 10.0, "num_return_sequences": 3
+                   // CHANGE(reshinth) :  "use_gpu": USE_GPU is depreceated, refer https://huggingface.co/docs/api-inference/detailed_parameters#text-generation-task
+                } 
             }),
             headers: headers
         })
