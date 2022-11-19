@@ -38,7 +38,7 @@ function activate(context) {
                 let rs;
                 try {
                     // Fetch the code completion based on the text in the user's document
-                    rs = yield fetchCodeCompletions_1.fetchCodeCompletionTexts(textBeforeCursor, document.fileName, MODEL_NAME, API_KEY, USE_GPU);
+                    rs = yield (0, fetchCodeCompletions_1.fetchCodeCompletionTexts)(textBeforeCursor, document.fileName, MODEL_NAME, API_KEY, USE_GPU);
                 }
                 catch (err) {
                     if (err instanceof Error) {
