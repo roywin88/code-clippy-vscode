@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import * as openai from 'openai';
 
 export type FetchCodeCompletions = {
     completions: Array<string>
@@ -47,3 +48,45 @@ export function fetchCodeCompletionTexts(prompt: string, fileName: string, MODEL
         .catch(err => reject(err))
     })
 }
+
+export function fetchCodeCompletionTextsFaux(prompt: string): Promise<FetchCodeCompletions> {
+    console.log('fastertransformer')
+    return new Promise((resolve, reject) => {
+        const oa = openai.OpenAIApi(
+            new openai.Configuration({
+                apiKey: "dummy",
+                basePath: "http://localhost:5000",
+            }),
+        );
+        const response = oa.createCompletion({
+            model: "fastertransformer",
+            prompt: prompt as openai.CreateCompletionRequestPrompt,
+            stop: ["\n\n"],
+        });
+        return response
+        .then(res => res.data.choices)
+        .then(choices => {
+            if (Array.isArray(choices)) {
+                const completions = Array<string>()
+                for (let i=0; i < choices.length; i++) {
+                    const completion =  choices[i].gtext.trimStart()
+                    if (completion.trim() === "") continue
+
+                    completions.push(
+                        completion
+                    )
+                }        
+                console.log(completions)
+                resolve({ completions })
+            }
+            else {
+                console.log(choices);
+                throw new Error("Error")
+            }
+        })
+        .catch(err => reject(err))
+        })
+}    
+        
+        
+    
