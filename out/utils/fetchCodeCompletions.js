@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchCodeCompletionTexts = void 0;
+exports.fetchCodeCompletionTextsFaux = exports.fetchCodeCompletionTexts = void 0;
 const node_fetch_1 = require("node-fetch");
+const openai = require("openai");
 function fetchCodeCompletionTexts(prompt, fileName, MODEL_NAME, API_KEY, USE_GPU) {
     console.log(MODEL_NAME);
     const API_URL = `https://api-inference.huggingface.co/models/${MODEL_NAME}`;
@@ -44,3 +45,41 @@ function fetchCodeCompletionTexts(prompt, fileName, MODEL_NAME, API_KEY, USE_GPU
     });
 }
 exports.fetchCodeCompletionTexts = fetchCodeCompletionTexts;
+function fetchCodeCompletionTextsFaux(prompt) {
+    console.log('fastertransformer');
+    return new Promise((resolve, reject) => {
+        const oa = new openai.OpenAIApi(new openai.Configuration({
+            apiKey: "dummy",
+            basePath: "http://localhost:5000/v1",
+        }));
+        const response = oa.createCompletion({
+            model: "fastertransformer",
+            prompt: prompt,
+            stop: ["\n\n"],
+        });
+        return response
+            .then(res => res.data.choices)
+            .then(choices => {
+            var _a;
+            if (Array.isArray(choices)) {
+                const completions = Array();
+                for (let i = 0; i < choices.length; i++) {
+                    const completion = (_a = choices[i].text) === null || _a === void 0 ? void 0 : _a.trimStart();
+                    if (completion === undefined)
+                        continue;
+                    if ((completion === null || completion === void 0 ? void 0 : completion.trim()) === "")
+                        continue;
+                    completions.push(completion);
+                }
+                console.log(completions);
+                resolve({ completions });
+            }
+            else {
+                console.log(choices);
+                throw new Error("Error");
+            }
+        })
+            .catch(err => reject(err));
+    });
+}
+exports.fetchCodeCompletionTextsFaux = fetchCodeCompletionTextsFaux;

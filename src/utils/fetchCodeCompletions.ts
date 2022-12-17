@@ -52,10 +52,10 @@ export function fetchCodeCompletionTexts(prompt: string, fileName: string, MODEL
 export function fetchCodeCompletionTextsFaux(prompt: string): Promise<FetchCodeCompletions> {
     console.log('fastertransformer')
     return new Promise((resolve, reject) => {
-        const oa = openai.OpenAIApi(
+        const oa = new openai.OpenAIApi(
             new openai.Configuration({
                 apiKey: "dummy",
-                basePath: "http://localhost:5000",
+                basePath: "http://localhost:5000/v1",
             }),
         );
         const response = oa.createCompletion({
@@ -69,8 +69,9 @@ export function fetchCodeCompletionTextsFaux(prompt: string): Promise<FetchCodeC
             if (Array.isArray(choices)) {
                 const completions = Array<string>()
                 for (let i=0; i < choices.length; i++) {
-                    const completion =  choices[i].gtext.trimStart()
-                    if (completion.trim() === "") continue
+                    const completion =  choices[i].text?.trimStart()
+                    if (completion === undefined) continue
+                    if (completion?.trim() === "") continue
 
                     completions.push(
                         completion

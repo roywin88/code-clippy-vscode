@@ -19,11 +19,11 @@ export function activate(context: vscode.ExtensionContext) {
 			// Grab the api key from the extension's config
 			const configuration = vscode.workspace.getConfiguration('', document.uri);
 			const USE_FAUXPILOT = configuration.get("conf.resource.useFauxPilot", false);
-			if (!USE_FAUXPILOT) {
-				const MODEL_NAME = configuration.get("conf.resource.hfModelName", "");
-				const API_KEY = configuration.get("conf.resource.hfAPIKey", "");
-				const USE_GPU = configuration.get("conf.resource.useGPU", false);
-			}
+			// if (!USE_FAUXPILOT) {
+			const MODEL_NAME = configuration.get("conf.resource.hfModelName", "");
+			const API_KEY = configuration.get("conf.resource.hfAPIKey", "");
+			const USE_GPU = configuration.get("conf.resource.useGPU", false);
+			// }
 
 			// vscode.comments.createCommentController
 			const textBeforeCursor = document.getText();
