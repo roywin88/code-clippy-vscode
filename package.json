@@ -37,6 +37,12 @@
 		"configuration": {
 			"title": "Code Clippy Configuration",
 			"properties": {
+				"conf.resource.useFauxPilot": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to use Faux Pilo: https://github.com/moyix/fauxpilot",
+					"scope": "resource"
+				},
 				"conf.resource.hfModelName": {
 					"type": "string",
 					"default": "flax-community/gpt-neo-125M-code-clippy-dedup-2048",
@@ -84,6 +90,7 @@
 	"dependencies": {
 		"@types/jsdom": "^16.2.12",
 		"jsdom": "^16.6.0",
-		"node-fetch": "^2.6.1"
+		"node-fetch": "^2.6.1",
+		"openai": "^3.0.0"
 	}
 }
