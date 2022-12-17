@@ -89,5 +89,44 @@ export function fetchCodeCompletionTextsFaux(prompt: string): Promise<FetchCodeC
         })
 }    
         
-        
+export function fetchCodeCompletionTextsGradio(prompt: string, fileName: string): Promise<FetchCodeCompletions> {
+    return new Promise((resolve, reject) => {
+        return fetch("https://bigcode-santa-demo.hf.space/run/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                data: [
+                prompt,
+                8,//tokens to generate
+                0.6, //temperature
+                42, //seed
+                ]
+            })
+        })
+        .then(res => res.json())
+        .then(json => {
+            console.log(json["data"])
+            if (Array.isArray(json["data"])) {
+                const completions = Array<string>()
+                for (let i=0; i < json["data"].length; i++) {
+                    const completion =  json["data"][i].replace(prompt, "").trimStart()
+                    if (completion.trim() === "") continue
+
+                    completions.push(
+                        completion
+                    )
+                }
+                console.log(completions)
+                resolve({ completions })
+            }
+            else {
+                console.log(json);
+                throw new Error(json["error"])
+            }
+        })
+        .catch(err => reject(err))
+    })
+}        
     

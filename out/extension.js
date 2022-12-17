@@ -25,11 +25,10 @@ function activate(context) {
             // Grab the api key from the extension's config
             const configuration = vscode.workspace.getConfiguration('', document.uri);
             const USE_FAUXPILOT = configuration.get("conf.resource.useFauxPilot", false);
-            // if (!USE_FAUXPILOT) {
+            const USE_GRADIO = configuration.get("conf.resource.useGradio", false);
             const MODEL_NAME = configuration.get("conf.resource.hfModelName", "");
             const API_KEY = configuration.get("conf.resource.hfAPIKey", "");
             const USE_GPU = configuration.get("conf.resource.useGPU", false);
-            // }
             // vscode.comments.createCommentController
             const textBeforeCursor = document.getText();
             if (textBeforeCursor.trim() === "") {
@@ -39,7 +38,19 @@ function activate(context) {
             // Check if user's state meets one of the trigger criteria
             if (config_1.default.SEARCH_PHARSE_END.includes(textBeforeCursor[textBeforeCursor.length - 1]) || currLineBeforeCursor.trim() === "") {
                 let rs;
-                if (USE_FAUXPILOT) {
+                if (USE_GRADIO) {
+                    try {
+                        // Fetch the code completion based on the text in the user's document
+                        rs = yield (0, fetchCodeCompletions_1.fetchCodeCompletionTextsGradio)(textBeforeCursor, document.fileName);
+                    }
+                    catch (err) {
+                        if (err instanceof Error) {
+                            vscode.window.showErrorMessage(err.toString());
+                        }
+                        return { items: [] };
+                    }
+                }
+                else if (USE_FAUXPILOT) {
                     try {
                         // Fetch the code completion based on the text in the user's document
                         rs = yield (0, fetchCodeCompletions_1.fetchCodeCompletionTextsFaux)(textBeforeCursor);

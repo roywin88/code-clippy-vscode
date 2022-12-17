@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import CSConfig from './config';
-import { fetchCodeCompletionTexts, fetchCodeCompletionTextsFaux } from './utils/fetchCodeCompletions';
+import { fetchCodeCompletionTexts, fetchCodeCompletionTextsFaux, fetchCodeCompletionTextsGradio } from './utils/fetchCodeCompletions';
 
 export function activate(context: vscode.ExtensionContext) {
 	const disposable = vscode.commands.registerCommand(
@@ -19,11 +19,10 @@ export function activate(context: vscode.ExtensionContext) {
 			// Grab the api key from the extension's config
 			const configuration = vscode.workspace.getConfiguration('', document.uri);
 			const USE_FAUXPILOT = configuration.get("conf.resource.useFauxPilot", false);
-			// if (!USE_FAUXPILOT) {
+			const USE_GRADIO = configuration.get("conf.resource.useGradio", false);
 			const MODEL_NAME = configuration.get("conf.resource.hfModelName", "");
 			const API_KEY = configuration.get("conf.resource.hfAPIKey", "");
 			const USE_GPU = configuration.get("conf.resource.useGPU", false);
-			// }
 
 			// vscode.comments.createCommentController
 			const textBeforeCursor = document.getText();
@@ -38,7 +37,19 @@ export function activate(context: vscode.ExtensionContext) {
 			if (CSConfig.SEARCH_PHARSE_END.includes(textBeforeCursor[textBeforeCursor.length - 1]) || currLineBeforeCursor.trim() === "") {
 				let rs;
 
-				if (USE_FAUXPILOT) {
+				if (USE_GRADIO) {
+					try {
+						// Fetch the code completion based on the text in the user's document
+						rs = await fetchCodeCompletionTextsGradio(textBeforeCursor, document.fileName);
+					} catch (err) {
+	
+						if (err instanceof Error) {
+							vscode.window.showErrorMessage(err.toString());
+						}
+						return { items: [] };
+					}
+				}
+				else if (USE_FAUXPILOT) {
 					try {
 						// Fetch the code completion based on the text in the user's document
 						rs = await fetchCodeCompletionTextsFaux(textBeforeCursor);
@@ -50,7 +61,6 @@ export function activate(context: vscode.ExtensionContext) {
 						return { items: [] };
 					}
 				}
-
 				else {	
 					try {
 						// Fetch the code completion based on the text in the user's document

@@ -8,7 +8,7 @@
 	"version": "0.0.1",
 	"publisher": "ncoop57",
 	"icon": "code_clippy_logo.jpg",
-	"repository": "https://github.com/ncoop57/gpt-code-clippy/",
+	"repository": "https://github.com/CodedotAl/code-clippy-vscode/",
 	"engines": {
 		"vscode": "^1.34.0"
 	},
@@ -41,6 +41,12 @@
 					"type": "boolean",
 					"default": false,
 					"description": "Whether to use Faux Pilo: https://github.com/moyix/fauxpilot",
+					"scope": "resource"
+				},
+				"conf.resource.useGradio": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to use the bigcode gradio demo.",
 					"scope": "resource"
 				},
 				"conf.resource.hfModelName": {

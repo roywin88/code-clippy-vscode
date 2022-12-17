@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchCodeCompletionTextsFaux = exports.fetchCodeCompletionTexts = void 0;
+exports.fetchCodeCompletionTextsGradio = exports.fetchCodeCompletionTextsFaux = exports.fetchCodeCompletionTexts = void 0;
 const node_fetch_1 = require("node-fetch");
 const openai = require("openai");
 function fetchCodeCompletionTexts(prompt, fileName, MODEL_NAME, API_KEY, USE_GPU) {
@@ -83,3 +83,42 @@ function fetchCodeCompletionTextsFaux(prompt) {
     });
 }
 exports.fetchCodeCompletionTextsFaux = fetchCodeCompletionTextsFaux;
+function fetchCodeCompletionTextsGradio(prompt, fileName) {
+    return new Promise((resolve, reject) => {
+        return (0, node_fetch_1.default)("https://bigcode-santa-demo.hf.space/run/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                data: [
+                    prompt,
+                    8,
+                    0.6,
+                    42, //seed
+                ]
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+            console.log(json["data"]);
+            if (Array.isArray(json["data"])) {
+                const completions = Array();
+                for (let i = 0; i < json["data"].length; i++) {
+                    const completion = json["data"][i].replace(prompt, "").trimStart();
+                    if (completion.trim() === "")
+                        continue;
+                    completions.push(completion);
+                }
+                console.log(completions);
+                resolve({ completions });
+            }
+            else {
+                console.log(json);
+                throw new Error(json["error"]);
+            }
+        })
+            .catch(err => reject(err));
+    });
+}
+exports.fetchCodeCompletionTextsGradio = fetchCodeCompletionTextsGradio;
